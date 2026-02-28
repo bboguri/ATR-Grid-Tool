@@ -5,167 +5,50 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ATR网格计算器</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body { 
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
-            background: #f4f7f9; 
-            padding: 15px; 
-            display: flex; 
-            justify-content: center; 
-            line-height: 1.5;
-        }
-        .card { 
-            background: white; 
-            padding: 25px; 
-            border-radius: 16px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08); 
-            width: 100%; 
-            max-width: 500px; 
-        }
-        h2 { 
-            color: #1d1d1f; 
-            text-align: center; 
-            margin-bottom: 6px; 
-            font-weight: 600;
-            font-size: 20px;
-        }
-        .version {
-            text-align: center;
-            font-size: 12px;
-            color: #888;
-            margin-bottom: 20px;
-        }
-        .section-title { 
-            font-size: 16px; 
-            font-weight: 600; 
-            color: #007aff; 
-            margin: 20px 0 12px; 
-            border-bottom: 1px solid #eee; 
-            padding-bottom: 6px;
-        }
-        .input-group { 
-            margin-bottom: 18px; 
-        }
-        label {
-            display: block;
-            font-size: 16px;
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 6px;
-        }
-        .tip { 
-            font-size: 12px; 
-            color: #888; 
-            display: block; 
-            margin-bottom: 6px; 
-        }
-        input, select { 
-            width: 100%; 
-            padding: 12px 15px; 
-            border: 1px solid #ddd; 
-            border-radius: 8px; 
-            box-sizing: border-box; 
-            font-size: 15px;
-            transition: all 0.2s ease;
-        }
-        input:focus, select:focus { 
-            border-color: #007aff; 
-            outline: none;
-            box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.2);
-        }
-        .btn-group {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-top: 10px;
-        }
-        button { 
-            padding: 14px; 
-            border: none; 
-            border-radius: 8px; 
-            font-size: 16px; 
-            font-weight: 600; 
-            cursor: pointer; 
-            transition: all 0.25s ease;
-        }
-        .btn-primary {
-            background: #007aff; 
-            color: white; 
-        }
-        .btn-clear {
-            background: #e6e6e6;
-            color: #666;
-        }
-        button:hover { 
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-        .btn-primary:hover {
-            background: #0066cc;
-        }
-        .btn-clear:hover {
-            background: #d2d2d2;
-        }
-        button:active {
-            transform: translateY(0);
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-        }
+        * {margin: 0;padding: 0;box-sizing: border-box;}
+        body {font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;background: #f4f9ff;padding: 15px;display: flex;justify-content: center;line-height: 1.5;}
+        .card {background: white;padding: 25px;border-radius: 16px;box-shadow: 0 10px 30px rgba(0,0,0,0.08);width: 100%;max-width: 500px;}
         
-        #result { 
-            margin-top: 20px; 
-            display: none;
-            opacity: 0;
-            transform: translateY(10px);
-            transition: opacity 0.3s ease, transform 0.3s ease;
-        }
-        #result.show {
-            display: block;
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .grid-info { font-size: 16px; line-height: 2.2; }
-        .info-card { 
-            background: #f9fafc; 
-            padding: 12px 15px; 
-            border-radius: 8px; 
-            border: 1px solid #eee; 
-        }
-        .val { 
-            display: inline; 
-            font-size: 18px; 
-            font-weight: bold;
-        }
-        .mode-desc { font-size: 11px; color: #888; margin-top: 4px; }
+        h2 {color: #1d1d1d;text-align: center;margin-bottom: 6px;font-weight: 600;font-size: 20px;}
+        .section-title {font-size: 16px;font-weight: 600;color: #007aff;margin: 20px 0 12px;border-bottom: 1px solid #eee;padding-bottom: 6px;}
+        .version {text-align: center;font-size: 12px;color: #888;margin-bottom: 20px;}
         
-        .warn-safe { color: #34c759; font-weight: 500; }
-        .warn-warning { color: #ff9500; font-weight: 500; }
-        .warn-danger { color: #ff3b30; font-weight: 500; }
+        .input-group {margin-bottom: 18px;}
+        label {display: block;font-size: 15px;font-weight: 600;color: #333;margin-bottom: 6px;}
+        .tip {font-size: 12px;color: #888;display: block;margin-bottom: 6px;}
+        input, select {width: 100%;padding: 12px 15px;border: 1px solid #ddd;border-radius: 8px;box-sizing: border-box;font-size: 15px;}
+        input:focus, select:focus {border-color: #007aff;outline: none;box-shadow: 0 0 0 4px rgba(0,122,205,0.2);}
+        
+        .btn-group {display: grid;grid-template-columns: 1fr 1fr;gap: 10px;margin-top: 10px;}
+        button {padding: 14px;border: none;border-radius: 8px;font-size: 15px;font-weight: 600;cursor: pointer;}
+        .btn-primary {background: #007aff;color: white;}
+        .btn-clear {background: #e6e6e6;color: #666;}
+        
+        #result {margin-top: 20px;display: none;opacity: 0;transform: translateY(10px);transition: all 0.3s;}
+        #result.show {display: block;opacity: 1;transform: translateY(0);}
 
-        .profit-positive { color: #ff3b30; }
-        .profit-negative { color: #34c759; }
-
-        .profit-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+        .grid-info {font-size: 15px;line-height: 2.2;}
+        .info-card {background: #f9fafc;padding: 12px 15px;border-radius: 8px;border: 1px solid #eee;font-size: 15px;}
+        .val {display: inline;font-size: 15px;font-weight: bold;}
+        .mode-desc {font-size: 12px;color: #888;margin-top: 4px;}
+        
+        .warn-safe {color: #34c759;font-weight: 500;}
+        .warn-warning {color: #ff9500;font-weight: 500;}
+        .warn-danger {color: #ff3b30;font-weight: 500;}
+        .profit-positive {color: #ff3b30;}
+        .profit-negative {color: #34c759;}
+        .profit-rate {font-size: 12px; margin-left: 3px;}
     </style>
 </head>
 <body>
-
 <div class="card">
     <h2>ATR网格计算器</h2>
-    <div class="version">V6.0 稳定版</div>
+    <div class="version">V6.1 精准成交版</div>
 
     <div class="section-title">📊 基础行情数据</div>
     <div class="input-group">
-        <label>股价</label>
-        <input type="text" inputmode="decimal" id="price" placeholder="网格基准价">
+        <label>网格基准价</label>
+        <input type="text" inputmode="decimal" id="price" placeholder="股票成本价">
     </div>
     <div class="input-group">
         <label>ATR 指标值</label>
@@ -174,8 +57,8 @@
 
     <div class="section-title">⚙️ 网格策略设置</div>
     <div class="input-group">
-        <label>风险倍数 (Multiplier)</label>
-        <span class="tip">1.2(激进刷单) | 1.5(默认平衡) | 2.0(稳健)</span>
+        <label>风险倍数 (M)</label>
+        <span class="tip">1.2(激进) | 1.5(平衡) | 2.0(稳健)</span>
         <input type="text" inputmode="decimal" id="multiplier" value="1.5">
     </div>
 
@@ -183,11 +66,12 @@
     <div class="input-group">
         <label>选择模式</label>
         <select id="defenseMode" onchange="toggleMode()">
-            <option value="stable">稳健支撑模式 (固定价格)</option>
-            <option value="aggressive">激进防守模式 (5倍ATR动态)</option>
+            <option value="stable">稳健支撑模式(固定价格)</option>
+            <option value="aggressive">激进防守模式(5倍ATR动态)</option>
         </select>
         <div id="modeHint" class="mode-desc">稳健模式：死守前低支撑位，适合箱体股。</div>
     </div>
+
     <div class="input-group" id="supportInputGroup">
         <label>支撑位价格</label>
         <input type="text" inputmode="decimal" id="support" placeholder="止损价">
@@ -204,35 +88,33 @@
     </div>
 
     <div id="result">
-        <div id="levelText" style="font-weight: 600; font-size:16px; line-height:1.8; margin-bottom:18px;"></div>
+        <div id="levelText" style="font-weight:600;font-size:15px;line-height:1.8;margin-bottom:18px;"></div>
 
         <div class="section-title">🚩 网格交易条件单</div>
         <div class="grid-info" id="gridInfo"></div>
 
-        <div class="section-title">🎯 目标价与利润 (单格)</div>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 14px;">
+        <div class="section-title">🎯 目标价与利润(单格)</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:15px;">
             <div class="info-card">下档买入 <span id="nextBuy" class="val" style="color:#34c759;"></span></div>
             <div class="info-card">下档卖出 <span id="nextSell" class="val" style="color:#ff3b30;"></span></div>
         </div>
 
         <div style="margin-top:10px;">
             <div class="info-card">
-                <div class="profit-row">
-                    <div>单格利润 <span id="profit" class="val"></span></div>
-                    <div>收益率 <span id="profitRateDisplay" class="val"></span></div>
-                </div>
-                <div style="font-size:11px; color:#888; margin-top:6px;">未扣除手续费</div>
+                <div>单格利润 <span id="profit" class="val"></span></div>
+                <div style="font-size:12px;color:#888;margin-top:6px;">未扣除手续费</div>
             </div>
         </div>
 
         <div class="section-title">💰 资金压力测试</div>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 14px;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:15px;">
             <div class="info-card">补仓次数 <span id="count" class="val"></span></div>
             <div class="info-card">防守下限 <span id="finalLower" class="val" style="color:#ff3b30;"></span></div>
         </div>
+
         <div class="info-card" style="margin-top:10px;">
             需准备总现金: <span id="totalCash" class="val" style="color:#ff3b30;"></span>
-            <div id="cashWarn" style="font-size:12px; margin-top:5px; font-weight:600;"></div>
+            <div id="cashWarn" style="font-size:12px;margin-top:5px;font-weight:600;"></div>
         </div>
     </div>
 </div>
@@ -244,147 +126,157 @@ function toggleMode() {
     const hint = document.getElementById('modeHint');
     if (mode === 'aggressive') {
         group.style.display = 'none';
-        hint.innerText = "激进模式：基于 5 倍 ATR 自动计算止损位。";
+        hint.innerText = "激进模式：基于5倍ATR自动计算止损位。";
     } else {
         group.style.display = 'block';
         hint.innerText = "稳健模式：死守前低支撑位，适合明确底部平台。";
     }
 }
 
-function runAnalysis() {
-    const p = parseFloat(document.getElementById('price').value);
-    const atr = parseFloat(document.getElementById('atr').value);
-    const m = parseFloat(document.getElementById('multiplier').value);
-    const mode = document.getElementById('defenseMode').value;
-    const qty = parseInt(document.getElementById('qty').value);
-    let support = parseFloat(document.getElementById('support').value);
+function getDecimalPlaces(numStr) {
+    if (!numStr.includes('.')) return 2;
+    const d = numStr.split('.')[1].length;
+    return d >= 3 ? 3 : 2;
+}
 
-    if (isNaN(p) || p <= 0 || isNaN(atr) || atr <= 0 || isNaN(m) || m <= 0) {
+function runAnalysis() {
+    const priceStr = document.getElementById('price').value.trim();
+    const p = parseFloat(priceStr);
+    const atr = parseFloat(document.getElementById('atr').value);
+    const M = parseFloat(document.getElementById('multiplier').value);
+    const mode = document.getElementById('defenseMode').value;
+    const qty = parseInt(document.getElementById('qty').value) || 100;
+    let supportVal = parseFloat(document.getElementById('support').value);
+
+    if (isNaN(p) || p <= 0 || isNaN(atr) || atr <= 0 || isNaN(M) || M <= 0) {
         alert("请输入有效的正数参数");
         return;
     }
 
-    let finalSupport = mode === 'aggressive' ? (p - atr * 5) : support;
+    const decimals = getDecimalPlaces(priceStr);
+    let finalSupport = mode === 'aggressive' ? (p - atr * 5) : supportVal;
     if (isNaN(finalSupport) || finalSupport >= p) {
         alert("支撑位必须低于当前价！");
         return;
     }
 
-    const atrp = (atr / p) * 100;
-    let reb, level, advice;
+    const ATRP = (atr / p) * 100;
+    const buyStep = ATRP * M;
+    const sellStep = ATRP * M + 0.5;
 
-    if (atrp < 1.5) {
-        level = "低波动标的";
+    let reb;
+    if (ATRP < 1.5) {
         reb = 0.5;
-        advice = "⚠️ 该标的波动过小，建议调宽步长或换股。";
-    } else if (atrp >= 1.5 && atrp < 3.0) {
-        level = "中波动标的";
+    } else if (ATRP < 3) {
         reb = 0.8;
-        advice = "✅ 表现稳健，适合标准宽幅震荡网格。";
-    } else if (atrp >= 3.0 && atrp < 5.0) {
-        level = "高波动标的";
+    } else if (ATRP < 5) {
         reb = 1.0;
-        advice = "🚀 优质标的！弹性好，回本效率高。";
     } else {
-        level = "极端波动标的";
         reb = 1.5;
-        advice = "🔥 风险较高，避开财报/消息窗口期。";
     }
 
-    let buyStepPct = atrp * m;
-    if (buyStepPct < 0.1) buyStepPct = 0.1;
-    const sellStepPct = buyStepPct + 0.5;
+    // 原始理论价格
+    const buyPrice = p * (1 - buyStep / 100) * (1 + reb / 100);
+    const sellPrice = p * (1 + sellStep / 100) * (1 - reb / 100);
 
-    let buyCount = 0;
-    let totalBuyCash = p * qty;
+    // ========== 你指定的核心逻辑：先定死成交价 ==========
+    const finalBuyPrice = parseFloat(buyPrice.toFixed(decimals));
+    const finalSellPrice = parseFloat(sellPrice.toFixed(decimals));
+
+    // 用定死后的价格算利润
+    const profitPerShare = finalSellPrice - p;
+    const totalProfit = profitPerShare * qty;
+    const profitRate = ((profitPerShare / p) * 100).toFixed(2);
+
+    // 计算补仓次数与真实资金
     let tempPrice = p;
+    let buyCount = 0;
+    let totalCash = 0;
     const maxLoop = 50;
     let loop = 0;
 
-    while (tempPrice * (1 - buyStepPct / 100) >= finalSupport - 0.001 && loop < maxLoop) {
-        tempPrice = tempPrice * (1 - buyStepPct / 100);
+    totalCash += p * qty;
+
+    while (tempPrice * (1 - buyStep / 100) >= finalSupport - 0.001 && loop < maxLoop) {
+        tempPrice *= (1 - buyStep / 100);
+        const gridPrice = parseFloat(tempPrice.toFixed(decimals));
+        totalCash += gridPrice * qty;
         buyCount++;
-        totalBuyCash += tempPrice * qty;
         loop++;
     }
 
-    const finalTotalShares = (buyCount + 1) * qty;
-
-    const nBuy = p * (1 - buyStepPct / 100);
-    const nSell = nBuy * (1 + sellStepPct / 100);
-    const profit = (nSell - nBuy) * qty;
-    const profitRate = ((profit / (nBuy * qty)) * 100).toFixed(2);
-
-    const finalValue = finalSupport * finalTotalShares;
-    const maxDrawdown = ((finalValue - totalBuyCash) / totalBuyCash * 100).toFixed(2);
-
-    const resDiv = document.getElementById('result');
-    resDiv.classList.remove('show');
-    void resDiv.offsetWidth;
-    resDiv.classList.add('show');
-
-    let color;
-    if (atrp < 1.5) color = "#8e8e93";
-    else if (atrp < 3.0) color = "#007aff";
-    else if (atrp < 5.0) color = "#ff3b30";
-    else color = "#ff9500";
+    let level, advice, color;
+    if (ATRP < 1.5) {
+        level = "低波动标的";
+        advice = "⚠️ 该标的波动过小，建议调宽步长或换股。";
+        color = "#8e8e93";
+    } else if (ATRP < 3) {
+        level = "中波动标的";
+        advice = "✅ 表现稳健，适合标准宽幅震荡网格。";
+        color = "#007aff";
+    } else if (ATRP < 5) {
+        level = "高波动标的";
+        advice = "🚀 优质标的！弹性好，回本效率高。";
+        color = "#ff3b30";
+    } else {
+        level = "极端波动标的";
+        advice = "🔥 风险较高，避开财报/消息窗口期。";
+        color = "#ff9500";
+    }
 
     document.getElementById('levelText').innerHTML = `
-        ATR 波动占比：<span style="color:${color}">${atrp.toFixed(2)}%</span><br>
+        ATR波动占比：<span style="color:${color}">${ATRP.toFixed(2)}%</span><br>
         波动等级：<span style="color:${color}">${level}</span><br>
         操作建议：${advice}
     `;
 
     document.getElementById('gridInfo').innerHTML =
-        `🚩 买入：跌 <span style="color:#34c759">-${buyStepPct.toFixed(2)}%</span> 反弹 <span style="color:#ff3b30">+${reb.toFixed(1)}%</span><br>
-         🚩 卖出：涨 <span style="color:#ff3b30">+${sellStepPct.toFixed(2)}%</span> 回落 <span style="color:#34c759">-${reb.toFixed(1)}%</span>`;
+        `🚩 买入：跌 <span style="color:#34c759">-${buyStep.toFixed(2)}%</span> 反弹 <span style="color:#ff3b30">+${reb.toFixed(1)}%</span><br>
+         🚩 卖出：涨 <span style="color:#ff3b30">+${sellStep.toFixed(2)}%</span> 回落 <span style="color:#34c759">-${reb.toFixed(1)}%</span>`;
 
-    document.getElementById('nextBuy').innerText = nBuy.toFixed(2);
-    document.getElementById('nextSell').innerText = nSell.toFixed(2);
-    
-    const profitCls = profit >= 0 ? "profit-positive" : "profit-negative";
-    const rateCls = profitRate >= 0 ? "profit-positive" : "profit-negative";
-    
-    document.getElementById('profit').innerHTML = `<span class="${profitCls}">${profit.toFixed(2)} 元</span>`;
-    document.getElementById('profitRateDisplay').innerHTML = `<span class="${rateCls}">${profitRate}%</span>`;
+    document.getElementById('nextBuy').innerText = finalBuyPrice.toFixed(decimals);
+    document.getElementById('nextSell').innerText = finalSellPrice.toFixed(decimals);
+
+    // 利润显示：+号、无元、百分比更小
+    const profitSign = totalProfit >= 0 ? '+' : '';
+    const profitText = profitSign + totalProfit.toFixed(2);
+    const rateSign = profitRate >= 0 ? '+' : '';
+    const rateText = rateSign + profitRate;
+
+    const profitCls = totalProfit >= 0 ? "profit-positive" : "profit-negative";
+    const rateCls = profitRate >= 0 ? "profit-positive profit-rate" : "profit-negative profit-rate";
+
+    document.getElementById('profit').innerHTML = `
+        <span class="${profitCls}">${profitText}</span>
+        <span class="${rateCls}">${rateText}%</span>
+    `;
 
     document.getElementById('count').innerText = buyCount + " 次";
     const modeTag = mode === 'aggressive' ? " (5x ATR)" : "";
-    document.getElementById('finalLower').innerText = finalSupport.toFixed(2) + modeTag;
+    document.getElementById('finalLower').innerText = finalSupport.toFixed(decimals) + modeTag;
 
-    document.getElementById('totalCash').innerHTML = `
-        ${totalBuyCash.toFixed(0)} 元
-        <span style="font-size:11px; color:#888; font-weight:normal;">（含初始底仓）</span>
-    `;
+    document.getElementById('totalCash').innerHTML = `${Math.round(totalCash)} 元<span style="font-size:11px;color:#888;">（含初始底仓）</span>`;
 
     let warnClass, warnText;
     if (buyCount < 3) {
-        warnClass = "warn-safe";
-        warnText = "✅ 压力极小，安全可控";
+        warnClass = "warn-safe"; warnText = "✅ 压力极小，安全可控";
     } else if (buyCount <= 5) {
-        warnClass = "warn-warning";
-        warnText = "⚠️ 压力中等，合理仓位";
+        warnClass = "warn-warning"; warnText = "⚠️ 压力中等，合理仓位";
     } else {
-        warnClass = "warn-danger";
-        warnText = "❌ 压力过大，建议加宽网格";
+        warnClass = "warn-danger"; warnText = "❌ 压力过大，建议加宽网格";
     }
     document.getElementById('cashWarn').className = warnClass;
     document.getElementById('cashWarn').innerText =
-        `极限回撤：若跌至 ${finalSupport.toFixed(2)}，浮亏约 ${maxDrawdown}% | ${warnText}`;
+        `极限回撤：若跌至 ${finalSupport.toFixed(decimals)}，浮亏约 ${(((finalSupport - p) / p * 100)).toFixed(1)}% | ${warnText}`;
 
-    setTimeout(() => {
-        resDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }, 100);
+    document.getElementById('result').classList.add('show');
 }
 
 function clearInputs() {
     document.getElementById('price').value = '';
     document.getElementById('atr').value = '';
     document.getElementById('support').value = '';
-    const res = document.getElementById('result');
-    res.classList.remove('show');
-    setTimeout(() => { res.style.display = 'none'; }, 300);
-    document.getElementById('price').focus();
+    document.getElementById('result').classList.remove('show');
 }
 </script>
 </body>
