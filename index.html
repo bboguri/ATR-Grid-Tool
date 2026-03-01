@@ -19,31 +19,31 @@
         input, select {width: 100%;padding: 12px 15px;border: 1px solid #ddd;border-radius: 8px;box-sizing: border-box;font-size: 15px;}
         input:focus, select:focus {border-color: #007aff;outline: none;box-shadow: 0 0 0 4px rgba(0,122,205,0.2);}
         
-        .btn-group {display: grid;grid-template-columns: 1fr 1fr;gap: 10px;margin-top: 10px;}
-        button {padding: 14px;border: none;border-radius: 8px;font-size: 15px;font-weight: 600;cursor: pointer;}
-        .btn-primary {background: #007aff;color: white;}
-        .btn-clear {background: #e6e6e6;color: #666;}
+        .btn-group {display: grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;}
+        button {padding:14px;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;}
+        .btn-primary {background:#007aff;color:white;}
+        .btn-clear {background:#e6e6e6;color:#666;}
         
-        #result {margin-top: 20px;display: none;opacity: 0;transform: translateY(10px);transition: all 0.3s;}
-        #result.show {display: block;opacity: 1;transform: translateY(0);}
+        #result {margin-top:20px;display:none;opacity:0;transform:translateY(10px);transition:all 0.3s;}
+        #result.show {display:block;opacity:1;transform:translateY(0);}
 
-        .grid-info {font-size: 15px;line-height: 2.2;}
-        .info-card {background: #f9fafc;padding: 12px 15px;border-radius: 8px;border: 1px solid #eee;font-size: 15px;}
-        .val {display: inline;font-size: 15px;font-weight: bold;}
-        .mode-desc {font-size: 12px;color: #888;margin-top: 4px;}
+        .grid-info {font-size:15px;line-height:2.2;}
+        .info-card {background:#f9fafc;padding:12px 15px;border-radius:8px;border:1px solid #eee;font-size:15px;}
+        .val {display:inline;font-size:15px;font-weight:bold;}
+        .mode-desc {font-size:12px;color:#888;margin-top:4px;}
         
-        .warn-safe {color: #34c759;font-weight: 500;}
-        .warn-warning {color: #ff9500;font-weight: 500;}
-        .warn-danger {color: #ff3b30;font-weight: 500;}
-        .profit-positive {color: #ff3b30;}
-        .profit-negative {color: #34c759;}
-        .profit-rate {font-size: 12px; margin-left: 3px;}
+        .warn-safe {color:#34c759;font-weight:500;}
+        .warn-warning {color:#ff9500;font-weight:500;}
+        .warn-danger {color:#ff3b30;font-weight:500;}
+        .profit-positive {color:#ff3b30;}
+        .profit-negative {color:#34c759;}
+        .profit-rate {font-size:12px;margin-left:3px;}
     </style>
 </head>
 <body>
 <div class="card">
     <h2>ATR网格计算器</h2>
-    <div class="version">V6.1 精准成交版</div>
+    <div class="version">V6.2 正式实盘版</div>
 
     <div class="section-title">📊 基础行情数据</div>
     <div class="input-group">
@@ -113,7 +113,7 @@
         </div>
 
         <div class="info-card" style="margin-top:10px;">
-            需准备总现金: <span id="totalCash" class="val" style="color:#ff3b30;"></span>
+            预计花费: <span id="totalCash" class="val" style="color:#ff3b30;"></span>
             <div id="cashWarn" style="font-size:12px;margin-top:5px;font-weight:600;"></div>
         </div>
     </div>
@@ -175,27 +175,22 @@ function runAnalysis() {
         reb = 1.5;
     }
 
-    // 原始理论价格
     const buyPrice = p * (1 - buyStep / 100) * (1 + reb / 100);
     const sellPrice = p * (1 + sellStep / 100) * (1 - reb / 100);
 
-    // ========== 你指定的核心逻辑：先定死成交价 ==========
     const finalBuyPrice = parseFloat(buyPrice.toFixed(decimals));
     const finalSellPrice = parseFloat(sellPrice.toFixed(decimals));
 
-    // 用定死后的价格算利润
     const profitPerShare = finalSellPrice - p;
     const totalProfit = profitPerShare * qty;
     const profitRate = ((profitPerShare / p) * 100).toFixed(2);
 
-    // 计算补仓次数与真实资金
+    // 资金计算：底仓 + 逐格补仓（真实保守算法）
     let tempPrice = p;
     let buyCount = 0;
-    let totalCash = 0;
+    let totalCash = p * qty;
     const maxLoop = 50;
     let loop = 0;
-
-    totalCash += p * qty;
 
     while (tempPrice * (1 - buyStep / 100) >= finalSupport - 0.001 && loop < maxLoop) {
         tempPrice *= (1 - buyStep / 100);
@@ -225,37 +220,45 @@ function runAnalysis() {
     }
 
     document.getElementById('levelText').innerHTML = `
-        ATR波动占比：<span style="color:${color}">${ATRP.toFixed(2)}%</span><br>
-        波动等级：<span style="color:${color}">${level}</span><br>
-        操作建议：${advice}
+ATR波动占比：<span style="color:${color}">${ATRP.toFixed(2)}%</span><br>
+波动等级：<span style="color:${color}">${level}</span><br>
+操作建议：${advice}
     `;
 
     document.getElementById('gridInfo').innerHTML =
-        `🚩 买入：跌 <span style="color:#34c759">-${buyStep.toFixed(2)}%</span> 反弹 <span style="color:#ff3b30">+${reb.toFixed(1)}%</span><br>
-         🚩 卖出：涨 <span style="color:#ff3b30">+${sellStep.toFixed(2)}%</span> 回落 <span style="color:#34c759">-${reb.toFixed(1)}%</span>`;
+`🚩 买入：跌 <span style="color:#34c759">-${buyStep.toFixed(2)}%</span> 反弹 <span style="color:#ff3b30">+${reb.toFixed(1)}%</span><br>
+🚩 卖出：涨 <span style="color:#ff3b30">+${sellStep.toFixed(2)}%</span> 回落 <span style="color:#34c759">-${reb.toFixed(1)}%</span>`;
 
     document.getElementById('nextBuy').innerText = finalBuyPrice.toFixed(decimals);
     document.getElementById('nextSell').innerText = finalSellPrice.toFixed(decimals);
 
-    // 利润显示：+号、无元、百分比更小
-    const profitSign = totalProfit >= 0 ? '+' : '';
-    const profitText = profitSign + totalProfit.toFixed(2);
-    const rateSign = profitRate >= 0 ? '+' : '';
-    const rateText = rateSign + profitRate;
+    // ====================== 你要的格式：利润 + 千分位 + 括号收益率 ======================
+    const profitText = totalProfit.toLocaleString('zh-CN', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+        signDisplay: 'always' // 自动 + / -
+    });
+
+    const rateText = `(${profitRate >= 0 ? '+' : ''}${profitRate}%)`;
 
     const profitCls = totalProfit >= 0 ? "profit-positive" : "profit-negative";
-    const rateCls = profitRate >= 0 ? "profit-positive profit-rate" : "profit-negative profit-rate";
+    const rateCls = profitCls + " profit-rate";
 
     document.getElementById('profit').innerHTML = `
-        <span class="${profitCls}">${profitText}</span>
-        <span class="${rateCls}">${rateText}%</span>
+<span class="${profitCls}">${profitText}</span>
+<span class="${rateCls}">${rateText}</span>
     `;
 
     document.getElementById('count').innerText = buyCount + " 次";
     const modeTag = mode === 'aggressive' ? " (5x ATR)" : "";
     document.getElementById('finalLower').innerText = finalSupport.toFixed(decimals) + modeTag;
 
-    document.getElementById('totalCash').innerHTML = `${Math.round(totalCash)} 元<span style="font-size:11px;color:#888;">（含初始底仓）</span>`;
+    // 预计花费（千分位）
+    const formattedCash = totalCash.toLocaleString('zh-CN', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
+    document.getElementById('totalCash').innerHTML = formattedCash;
 
     let warnClass, warnText;
     if (buyCount < 3) {
@@ -267,7 +270,7 @@ function runAnalysis() {
     }
     document.getElementById('cashWarn').className = warnClass;
     document.getElementById('cashWarn').innerText =
-        `极限回撤：若跌至 ${finalSupport.toFixed(decimals)}，浮亏约 ${(((finalSupport - p) / p * 100)).toFixed(1)}% | ${warnText}`;
+`极限回撤：若跌至 ${finalSupport.toFixed(decimals)}，浮亏约 ${(((finalSupport - p) / p * 100)).toFixed(1)}% | ${warnText}`;
 
     document.getElementById('result').classList.add('show');
 }
